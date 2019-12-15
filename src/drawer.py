@@ -1,46 +1,58 @@
 import numpy as np
+import matplotlib
 from matplotlib import pyplot as plt
 import matplotlib.cm as cm
 import sys
+import math
 
-# %matplotlib inline
+matplotlib.use('TKAgg')
 
-# generate some random data
-npoints = 5
-x = np.random.randn(npoints)
-y = np.random.randn(npoints)
+def drawCircles(circleData):
+    plt.figure()
+    figure = plt.gca()
+    minX = sys.float_info.max
+    maxX = -minX
+    minY = minX
+    maxY = maxX
+    sqrt2 = math.sqrt(2)
+    for px, py, radius, color, label in circleData:
+        # plot circles using the RGBA colors
+        # print(label, px, py, radius)
+        circle = plt.Circle((px, py), radius=radius, color=color, fill=False)
+        figure.add_artist(circle)
+        delta = radius / sqrt2
+        plt.text(px + delta, py + delta, label, color=color)
+        minX = min(minX, px - radius)
+        minY = min(minY, py - radius)
+        maxX = max(maxX, px + radius)
+        maxY = max(maxY, py + radius)
+    # print(minX, minY, maxX, maxY)
+    plt.xlim([minX, maxX])
+    plt.ylim([minY, maxY])
+    figure.set_aspect(1.0)  # make aspect ratio square
+    # plot the scatter plot
+    plt.scatter(x, y, s=0, cmap='jet', facecolors='none')
+    plt.grid()
+    # plt.colorbar()  # this works because of the scatter
+    # plt.show(block=False)
+    plt.pause(0.1)
 
-# make the size proportional to the distance from the origin
-s = [0.1 * np.linalg.norm([a, b]) for a, b in zip(x, y)]
-s = [a / max(s) for a in s]  # scale
 
-# set color based on size
-c = s
-colors = [cm.jet(color) for color in c]  # gets the RGBA values from a float
-labels=range(npoints)
+def generateCircles():
+    global x, y, circleData
+    npoints = 5
+    x = np.random.randn(npoints)
+    y = np.random.randn(npoints)
+    radiouses = np.random.random(npoints)
+    colors = [cm.jet(float(index) / npoints) for index in range(npoints)]
+    labels = range(npoints)
+    return zip(x, y, radiouses, colors, labels)
 
-# create a new figure
-plt.figure()
-ax = plt.gca()
-minX = sys.float_info.max
-maxX = -minX
-minY = minX
-maxY = maxX
-for px, py, color, size, label in zip(x, y, colors, s,labels):
-    # plot circles using the RGBA colors
-    circle = plt.Circle((px, py), size, color=color, fill=False,label=label)
-    ax.add_artist(circle)
-    minX = min(minX, px - size)
-    minY = min(minY, py - size)
-    maxX = max(maxX, px + size)
-    maxY = max(maxY, py + size)
 
-plt.xlim([minX, maxX])
-plt.ylim([minY, maxY])
-ax.set_aspect(1.0)  # make aspect ratio square
+if __name__ == '__main__':
+    circleData1 = generateCircles()
+    drawCircles(circleData1)
+    circleData2 = generateCircles()
+    drawCircles(circleData2)
+    input("Press Enter to continue...")
 
-# plot the scatter plot
-plt.scatter(x, y, s=0, c=c, cmap='jet', facecolors='none')
-plt.grid()
-plt.colorbar()  # this works because of the scatter
-plt.show()
