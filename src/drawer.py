@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import matplotlib.cm as cm
 import sys
 import math
+import jsonsocket
 
 matplotlib.use('TKAgg')
 
@@ -50,9 +51,19 @@ def generateCircles():
 
 
 if __name__ == '__main__':
-    circleData1 = generateCircles()
-    drawCircles(circleData1)
-    circleData2 = generateCircles()
-    drawCircles(circleData2)
-    input("Press Enter to continue...")
+    # circleData1 = generateCircles()
+    # drawCircles(circleData1)
+    # circleData2 = generateCircles()
+    # drawCircles(circleData2)
+    # input("Press Enter to continue...")
 
+    host='localhost'
+    port=9999
+    server = jsonsocket.Server(host, port)
+    while True:
+        server.accept()
+        data = server.recv()
+        print(data)
+        circleData2 = generateCircles()
+        drawCircles(circleData2)
+        server.send({'status': 'ok'})
