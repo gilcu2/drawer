@@ -6,7 +6,7 @@ import sys
 import math
 import jsonsocket
 
-matplotlib.use('TKAgg')
+matplotlib.use('TkAgg')
 
 def drawCircles(circleData):
     plt.figure()
@@ -35,8 +35,8 @@ def drawCircles(circleData):
     plt.scatter(x, y, s=0, cmap='jet', facecolors='none')
     plt.grid()
     # plt.colorbar()  # this works because of the scatter
-    # plt.show(block=False)
-    plt.pause(0.1)
+    plt.show(block=True)
+    # plt.pause(0.1)
 
 
 def generateCircles():
@@ -51,19 +51,19 @@ def generateCircles():
 
 
 if __name__ == '__main__':
-    # circleData1 = generateCircles()
-    # drawCircles(circleData1)
+    circleData1 = generateCircles()
+    drawCircles(circleData1)
     # circleData2 = generateCircles()
     # drawCircles(circleData2)
     # input("Press Enter to continue...")
 
-    host='localhost'
-    port=9999
-    server = jsonsocket.Server(host, port)
-    while True:
-        server.accept()
-        data = server.recv()
-        print(data)
-        circleData2 = generateCircles()
-        drawCircles(circleData2)
-        server.send({'status': 'ok'})
+    # host='localhost'
+    # port=9999
+    # server = jsonsocket.Server(host, port)
+    # while True:
+    #     server.accept()
+    #     data = server.recv()
+    #     print(data)
+    #     circleData2 = generateCircles()
+    #     drawCircles(circleData2)
+    #     server.send({'status': 'ok'})

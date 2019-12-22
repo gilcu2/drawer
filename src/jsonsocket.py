@@ -106,11 +106,11 @@ class Client(object):
 
 def _send(socket, data):
   # try:
-  serialized = json.dumps(data)
+  serialized = json.dumps(data).encode()
   # except (TypeError, ValueError), e:
   #   raise Exception('You can only send JSON-serializable data')
   # send the length of the serialized data first
-  socket.send('%d\n' % len(serialized))
+  socket.send(('%d\n' % len(serialized)).encode())
   # send the serialized data
   socket.sendall(serialized)
 
@@ -119,7 +119,8 @@ def _recv(socket):
   length_str = ''
   char = socket.recv(1)
   while char != '\n':
-    length_str += char
+    length_str += str(char)
+    print("Recived %s"%length_str)
     char = socket.recv(1)
   total = int(length_str)
   # use a memoryview to receive the data chunk by chunk efficiently
