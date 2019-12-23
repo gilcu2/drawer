@@ -3,8 +3,10 @@ import matplotlib
 from matplotlib import pyplot as plt
 import matplotlib.cm as cm
 import sys
+import os
 import math
-import jsonsocket
+import json
+# import jsonsocket
 
 matplotlib.use('TkAgg')
 
@@ -51,7 +53,9 @@ def generateCircles():
 
 
 if __name__ == '__main__':
-    circleData1 = generateCircles()
+    # circleData1 = generateCircles()
+    data=os.getenv("DRAWER_INPUT")
+    circleData1=json.loads(data)
     drawCircles(circleData1)
     # circleData2 = generateCircles()
     # drawCircles(circleData2)
