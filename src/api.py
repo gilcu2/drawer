@@ -9,7 +9,7 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
 def home():
-    data=json.dumps(drawer.generateCircles())
+    data=json.dumps(drawer.generateCircles(),default=drawer.obj_dict)
     env={}
     env["DRAWER_INPUT"]=data
     Popen(["python","drawer.py"],env=env)
