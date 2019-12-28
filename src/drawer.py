@@ -37,14 +37,14 @@ def drawCircles(circles):
     for circleData in circles:
         # plot circles using the RGBA colors
         # print(label, px, py, radius)
-        circle = plt.Circle((circle.x, circle.y), radius=circle.radius, color=circle.color, fill=False)
+        circle = plt.Circle((circleData.x, circleData.y), radius=circleData.radius, color=circleData.color, fill=False)
         figure.add_artist(circle)
-        delta = circle.radius / sqrt2
-        plt.text(circle.x + delta, circle.y + delta, circle.label, color=circle.color)
-        minX = min(minX, circle.x - circle.radius)
-        minY = min(minY, circle.y - circle.radius)
-        maxX = max(maxX, circle.px + circle.radius)
-        maxY = max(maxY, circle.py + circle.radius)
+        delta = circleData.radius / sqrt2
+        plt.text(circleData.x + delta, circleData.y + delta, circleData.label, color=circleData.color)
+        minX = min(minX, circleData.x - circleData.radius)
+        minY = min(minY, circleData.y - circleData.radius)
+        maxX = max(maxX, circleData.px + circleData.radius)
+        maxY = max(maxY, circleData.py + circleData.radius)
     # print(minX, minY, maxX, maxY)
     plt.xlim([minX, maxX])
     plt.ylim([minY, maxY])
