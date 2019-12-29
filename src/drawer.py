@@ -1,29 +1,17 @@
 import numpy as np
 import matplotlib
+matplotlib.use('TkAgg')
+
 from matplotlib import pyplot as plt
 import matplotlib.cm as cm
 import sys
 import os
 import math
 import json
+from circle import *
 # import jsonsocket
 
-matplotlib.use('TkAgg')
 
-class Circle:
-    def __init__(self,x,y,radius,color,label):
-        self.x=x
-        self.y=y
-        self.radious=radius
-        self.color=color
-        self.label=label
-
-    def __str__(self):
-        return 'Circle(%s,%s,%s,%s,%s)'%(self.x,self.y,self.radious,self.color,self.label)
-
-
-def obj_dict(obj):
-    return obj.__dict__
 
 
 def drawCircles(circles):
@@ -34,17 +22,17 @@ def drawCircles(circles):
     minY = minX
     maxY = maxX
     sqrt2 = math.sqrt(2)
-    for circleData in circles:
+    for circle in circles:
         # plot circles using the RGBA colors
         # print(label, px, py, radius)
-        circle = plt.Circle((circleData.x, circleData.y), radius=circleData.radius, color=circleData.color, fill=False)
-        figure.add_artist(circle)
-        delta = circleData.radius / sqrt2
-        plt.text(circleData.x + delta, circleData.y + delta, circleData.label, color=circleData.color)
-        minX = min(minX, circleData.x - circleData.radius)
-        minY = min(minY, circleData.y - circleData.radius)
-        maxX = max(maxX, circleData.px + circleData.radius)
-        maxY = max(maxY, circleData.py + circleData.radius)
+        circleFig = plt.Circle((circle.x, circle.y), radius=circle.radius, color=circle.color, fill=False)
+        figure.add_artist(circleFig)
+        delta = circle.radius / sqrt2
+        plt.text(circle.x + delta, circle.y + delta, circle.label, color=circle.color)
+        minX = min(minX, circle.x - circle.radius)
+        minY = min(minY, circle.y - circle.radius)
+        maxX = max(maxX, circle.x + circle.radius)
+        maxY = max(maxY, circle.y + circle.radius)
     # print(minX, minY, maxX, maxY)
     plt.xlim([minX, maxX])
     plt.ylim([minY, maxY])
@@ -70,12 +58,18 @@ def generateCircles():
 
     return circles
 
+def json2obj(jsonString):
+    dictList=json.loads(jsonString)
+    r=[]
+    for dict in dictList:
+        r.append(dict2circle(dict))
+    return r
+
 
 if __name__ == '__main__':
     # circleData1 = generateCircles()
-    data=os.getenv("DRAWER_INPUT")
-    circleData1=json.loads(data)
-    drawCircles(circleData1)
+    circles=json2obj(os.getenv("DRAWER_INPUT"))
+    drawCircles(circles)
     # circleData2 = generateCircles()
     # drawCircles(circleData2)
     # input("Press Enter to continue...")
